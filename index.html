@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dare Notes</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#0033aa">
+  <!-- iOS meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <!-- Apple splash screens -->
+  <link rel="apple-touch-startup-image" href="splash/apple-splash-2048x2732.png" media="(device-width:1024px) and (device-height:1366px) and (-webkit-device-pixel-ratio:2)">
+  <link rel="apple-touch-startup-image" href="splash/apple-splash-1668x2388.png" media="(device-width:834px) and (device-height:1194px) and (-webkit-device-pixel-ratio:2)">
+  <link rel="apple-touch-startup-image" href="splash/apple-splash-1536x2048.png" media="(device-width:768px) and (device-height:1024px) and (-webkit-device-pixel-ratio:2)">
+  <link rel="apple-touch-startup-image" href="splash/apple-splash-1125x2436.png" media="(device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3)">
+  <link rel="apple-touch-startup-image" href="splash/apple-splash-828x1792.png" media="(device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:2)">
+  <link rel="apple-touch-startup-image" href="splash/apple-splash-640x1136.png" media="(device-width:320px) and (device-height:568px) and (-webkit-device-pixel-ratio:2)">
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="header">
+      <div class="brand">
+        <img src="icons/icon-192.png" class="logo" alt="Dare Notes">
+        <h1>Dare Notes</h1>
+      </div>
+      <div class="header-actions">
+        <button id="newBtn">+ New</button>
+        <button id="exportBtn">Export</button>
+        <input id="importFile" type="file" style="display:none" accept=".json">
+        <button id="importBtn">Import</button>
+        <button id="settingsBtn" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <aside class="sidebar">
+        <div class="searchbar">
+          <input id="search" placeholder="Search notes or tags...">
+        </div>
+        <div id="notesList" class="notes-list"></div>
+      </aside>
+
+      <section class="editor-wrap">
+        <div id="editor" class="editor empty">
+          <input id="title" placeholder="Title">
+          <textarea id="body" placeholder="Write your note..."></textarea>
+          <div class="meta-row">
+            <input id="tags" placeholder="tags, comma separated">
+            <div class="editor-actions">
+              <button id="saveNow">Save now</button>
+              <span id="status" class="status">Idle</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Settings panel -->
+  <div id="settingsPanel" class="panel hidden">
+    <div class="panel-inner">
+      <h3>Settings</h3>
+      <div class="setting">
+        <label>Theme</label>
+        <select id="themeSelect">
+          <option value="dark">Deep Blue (dark)</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
+      <div class="setting">
+        <label>Change PIN</label>
+        <input id="changePin" type="password" placeholder="Enter new PIN (4-6 digits)">
+        <button id="changePinBtn">Change PIN</button>
+      </div>
+      <div class="setting">
+        <label>Export / Import</label>
+        <button id="exportBtn2">Export</button>
+        <button id="importBtn2">Import</button>
+      </div>
+      <div class="setting">
+        <label>Reset App</label>
+        <button id="resetBtn2" class="danger">Reset (erase all)</button>
+      </div>
+      <div style="text-align:right"><button id="closeSettings">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Lock overlay -->
+  <div id="lockOverlay" class="overlay">
+    <div class="lock-card">
+      <img src="icons/icon-192.png" class="lock-logo">
+      <h2 id="lockTitle">Enter PIN</h2>
+      <input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="4-6 digit PIN">
+      <div class="lock-actions">
+        <button id="pinSubmit">Unlock</button>
+        <button id="pinReset" class="danger">Reset (clears notes)</button>
+      </div>
+      <p class="small">PIN is stored locally. Reset will erase all notes and the PIN.</p>
+    </div>
+  </div>
+
+  <!-- Install hint banner -->
+  <div id="installHint" class="install-hint hidden">
+    <span>Install Dare Notes for faster access</span>
+    <button id="installBtn">Install</button>
+    <button id="dismissInstall">Dismiss</button>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // register service worker if on http(s)
+    if ('serviceWorker' in navigator) {
+      if (location.protocol === 'https:' || location.hostname === 'localhost') {
+        navigator.serviceWorker.register('sw.js').catch(console.warn)
+      }
+    }
+  </script>
+</body>
+</html>
